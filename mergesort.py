@@ -1,41 +1,41 @@
-def merge_sort(arr, start, end):
-    if start < end:
-        mid = int((start + end) / 2)
-        merge_sort(arr, start, mid)
-        merge_sort(arr, mid + 1, end)
-        merge(arr, start, mid, end)
-
-
-def merge(arr, start, mid, end):
-    temp = [0] * (end - start + 1)
-
-    temp_i, i, j = 0, start, mid + 1
-
-    while i <= mid and j <= end:
-        if (arr[i] < arr[j]):
-            temp[temp_i] = arr[i]
-            i += 1
+def merge(arr_input, low, high, mid):
+    buffer = []
+    count_left, count_right = low, mid
+    while count_left < mid and count_right <= high:
+        print(count_left)
+        buffer.append(min(arr_input[count_right], arr_input[count_left]))
+        if arr_input[count_left] <= arr_input[count_right]:
+            count_left += 1
         else:
-            temp[temp_i] = arr[j]
-            j += 1
-        temp_i += 1
+            count_right += 1
 
-    while i <= mid:
-        temp[temp_i] = arr[i]
+    while count_left < mid:
+        buffer.append(arr_input[count_left])
+        count_left += 1
+
+    while count_right <= high:
+        buffer.append(arr_input[count_right])
+        count_right += 1
+
+    i, j = low, 0
+    while i <= high and j < len(buffer):
+        arr_input[i] = buffer[j]
         i += 1
-        temp_i += 1
-
-    while j <= end:
-        temp[temp_i] = arr[j]
         j += 1
-        temp_i += 1
-
-    i = start
-    while i <= end:
-        arr[i] = temp[i - start]
-        i += 1
+    print(buffer)
 
 
-input = [3, 6, 23, 12, 11]
-merge_sort(input, 0, len(input) - 1)
-print(input)
+def merge_sort(arr_input):
+    def divide_arr(arr, low, high):
+        if low < high:
+            mid = (low + high) // 2
+            divide_arr(arr, low, mid)
+            divide_arr(arr, mid + 1, high)
+            merge(arr, low, high, mid)
+
+    divide_arr(arr_input, 0, len(arr_input) - 1)
+
+
+inp = [3, 23, 12, 0, 323, 333]
+merge_sort(inp)
+print(inp)
